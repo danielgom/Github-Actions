@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: MyTestApllication-D
+spec:
+  selector:
+    matchLabels:
+      app: MyTestApllication-D
+  template:
+    metadata:
+      labels:
+        app: MyTestApllication-D
+    spec:
+      containers:
+      - name: MyTestApllication-D
+        image: <Public/Private Repository>/<Name>:<Version>
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080 # Port example
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ServiceOfMyTestApplication
+spec:
+  selector:
+    app: MyTestApllication-D
+  ports:
+  - port: 9000
+    targetPort: 8080
+
