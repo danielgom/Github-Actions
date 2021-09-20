@@ -1,0 +1,15 @@
+name: Container
+
+on: push
+
+jobs:
+  java-docker:
+    runs-on: ubuntu-latest
+    container:
+      image: openjdk:17-bullseye # Job will run within this container image
+    steps:
+      - name: Log java version
+        # Run commands should run within the container declared above
+        run: |
+          java --version
+          cat /etc/os-release
