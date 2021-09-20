@@ -1,17 +1,32 @@
 name: Actions Workflow
 
 on:
-  #push:
+  push:
+    branches:
+    # Only on these branches
+      - "master"
+      - "feature/*" # Matches feature/featA, feature/featureb but doesnt match,
+      # feature /feat/a
+      - "feature/**" #Matches /feat/a
+    #branches-ignore:  We cannot use branches and branches-ignore together we need to use them separately
+      #- ""
+    tags:
+      - v1.* # Target a tag
+    paths:
+      - "**.java" # Only trigger when we change a .java file
+      - "!this.java" # Exclude this.java from triggering the action
   #schedule:
   #  - cron: "0/5 * * * *"
   repository_dispatch:
     types: [build]
   pull_request:
+    branches:
+      - "master"
     types:
-      - "closed"
-      - "assigned"
+      #- "closed"
+      #- "assigned"
       - "opened"
-      - "reopened"
+      #- "reopened"
 
 jobs:
   run-github-actions:
