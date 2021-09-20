@@ -7,11 +7,24 @@ jobs:
     strategy:
       #fail-fast: true  # If one fails then the other ones will stop
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-lates] # Declarin a list of Operating systems
+        os: [macos-latest, ubuntu-latest, windows-latest] # Declarin a list of Operating systems
         node_version: [6,8,10] # Will run 3 jobs , one for version 6, then 8 then 10
       #max-parallel: 2 # Limit the ammount of jobs running in parallel
 
+        exclude: # Excluding 
+          - os: ubuntu-latest
+            node_version: 6
+          - os: macos-latest
+            node_version: 8
+
+        include: # Include adds extra configuration to certain configurations
+          - os: ubuntu-latest
+            node_version: 8
+            is_ubuntu_8: "true"
+
     runs-on: ${{ matrix.os }} # Run for every os in the matrix.os
+    env:
+      IS_UBUNTU_8: ${{ matrix.is_ubuntu_8 }}
     steps:
       - name: Log node version
         run: node -v
@@ -19,4 +32,6 @@ jobs:
         with:
           node-version: ${{ matrix.node_version }} # Run for every node version
       - name: Log node version
-        run: node -v
+        run: | 
+          node -v
+          echo ${IS_UBUNTU_8}
